@@ -1,0 +1,225 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #FF7F50, #FFD700); /* Fondo degradado */
+    color: #000000;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar el contenido horizontalmente */
+    justify-content: center; /* Centrar el contenido verticalmente */
+    text-align: center;
+    overflow-x: hidden;
+  }
+  
+  /* Contenedor Principal */
+  .app-container {
+    width: 100%; /* Ajusta el tamaño del contenedor al 100% de la pantalla */
+    height: 100vh; /* Ocupa todo el alto de la pantalla */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Para separar el header del contenido principal */
+  }
+  
+  /* Estilos del Header */
+  .header {
+    width: 96%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #FFCC00;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Añadir sombra al header */
+    position: fixed; /* Fija el header en la parte superior */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegura que el header esté por encima del contenido */
+  }
+  
+  .left-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .nav-menu {
+    display: flex;
+  }
+  
+  .nav-menu a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .right-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar {
+    padding: 5px;
+    margin-right: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .nav-menu a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .right-header {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar {
+    padding: 5px;
+    margin-right: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .cart-icon {
+    font-size: 24px;
+    position: relative;
+  }
+  
+  .cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 14px;
+  }
+  
+  /* Estilos del Contenido Principal */
+  .main-content {
+    width: 100%;
+    flex: 1; /* Hace que el contenido principal ocupe todo el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px; /* Espacio para el header fijo */
+    padding: 20px;
+  }
+  
+  .game-section {
+    margin-bottom: 40px;
+  }
+  
+  .game-description {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .game-description p {
+    width: 60%;
+    min-width: 250px;
+  }
+  
+  .game-image {
+    width: 400px;
+    height: auto;
+  }
+  
+  /* Secciones de Objetos */
+  .collectibles-section, .store-items-section {
+    margin-bottom: 40px;
+  }
+  
+  h2 {
+    background-color: #d9d9d9;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilos de las Cards */
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Ajustable a diferentes tamaños de pantalla */
+    gap: 30px;
+    justify-content: center; /* Centra horizontalmente las cards */
+    padding: 20px;
+    max-width: 1366px; /* Tamaño máximo centrado para pantallas de laptop */
+    margin: 0 auto;
+  }
+  
+  .card {
+    background-color: #FFEB3B;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    height: 130px;
+    display: flex;
+    flex-direction: column; /* Asegura que el texto pueda ocupar toda la altura */
+    justify-content: space-between; /* Distribuye el texto a lo largo de toda la tarjeta */
+    text-align: center;
+    width: 100%; /* Hace que la tarjeta use el ancho completo disponible */
+  }
+  
+  .item-card:hover {
+    transform: scale(1.05); /* Efecto de zoom al pasar el cursor */
+  }
+  
+  .item-card {
+    background-color: #FFEB3B;
+    border-radius: 10px;
+    padding: 50px; /* Incrementa el tamaño de padding */
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 250px; /* Aumenta el ancho máximo de cada card */
+    margin: 0 auto; /* Centrar individualmente cada card */
+  }
+  
+  .item-card img {
+    width: 185px; /* Aumenta el tamaño de la imagen */
+    height: 185px;
+    object-fit: cover;
+    margin-bottom: 25px; /* Añade más espacio entre la imagen y el texto */
+  }
+  
+  .item-card p {
+    font-size: 16px; /* Aumenta el tamaño del texto */
+    color: #333;
+    margin-top: 10px;
+  }
+  
+  /* Estilo Responsivo para Pantallas más Pequeñas */
+  @media (max-width: 768px) {
+    .item-grid {
+      grid-template-columns: 1fr; /* Solo una columna en pantallas pequeñas */
+      padding: 10px;
+    }
+  
+    .item-card {
+      max-width: 100%; /* Hacer las cards más amplias en pantallas pequeñas */
+    }
+  }
