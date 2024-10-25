@@ -4,10 +4,11 @@ import { ScrollView } from 'react-native-gesture-handler';
 /* import './App.css'; */
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-//import { Producto } from './mod-producto';
+
 
 export function Home (){
     return(
+        // eslint-disable-next-line react-native/no-inline-styles
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ScrollView style={styles.background}>
                 <LinearGradient
@@ -16,22 +17,24 @@ export function Home (){
                 colors={['#ff7e5d', '#ff9f1f']}
                 style={styles.container}
                 >
-                    <Text style={styles.title}>
+                    {/* <Text style={styles.title}>
                         Rayman: Los Caminos de la Vida
-                    </Text>
+                    </Text> */}
+
+                    <Image source={require('../src/img/logo.png')} style={styles.imga}/>
+
 
                     <View style={styles.div}>
                         <Text style={styles.text}>
-                            Rayman: Los Caminos De La Vida, En este juego de Rayman, el objetivo principal es ayudar a Rayman a llegar 
-                            a la fiesta de cumpleaños de Luka. El juego se desarrolla en un solo nivel continuo, pero está dividido en 
-                            cuatro fases distintas, cada una con su propio conjunto de desafíos y obstáculos. Cada fase presenta un aumento 
-                            en la dificultad y requiere que Rayman utilice todas sus habilidades de correr, saltar y esquivar para llegar 
-                            al final. Al completar todas las fases, Rayman finalmente llega a la fiesta de Luka, donde lo espera una gran 
-                            celebración. Este juego combina elementos clásicos de plataformas con la emoción de un juego de correr, 
-                            ofreciendo una experiencia divertida y desafiante para los jugadores de todas las edades.
+                            Rayman: Los Caminos De La Vida, En este juego de Rayman, el objetivo principal es ayudar a Rayman a llegar
+                             a la fiesta de cumpleaños de Luka. El juego se desarrolla en un solo nivel continuo, pero está dividido en
+                             cuatro fases distintas, cada una con su propio conjunto de desafíos y obstáculos. Cada fase presenta un aumento
+                             en la dificultad y requiere que Rayman utilice todas sus habilidades de correr, saltar y esquivar para llegar
+                             al final. Al completar todas las fases, Rayman finalmente llega a la fiesta de Luka, donde lo espera una gran
+                             celebración. Este juego combina elementos clásicos de plataformas con la emoción de un juego de correr,
+                             ofreciendo una experiencia divertida y desafiante para los jugadores de todas las edades.
                         </Text>
                     </View>
-                    <Image source={require('../src/img/logo.png')} style={styles.imga}/>
 
 
 
@@ -59,7 +62,20 @@ export function Home (){
                         <Text style={styles.prodTxt}>Tepa</Text>
                     </View>
 
-{/*                     <Producto url={'../src/img/kguama.jpeg'} texto={'Kagama'} />  */}
+
+
+                    <View style={styles.encab}>
+                        <Text style={styles.encabTxt}>Objetos de la Tienda</Text>
+                    </View>
+                    <View style={styles.divProd}>
+                        <Image source={require('../src/img/sqlento.jpg')} style={styles.prodImg} />
+                        <Text style={styles.prodTxt}>Figura de acción del SuQlento</Text>
+                    </View>
+                    <View style={styles.divProd}>
+                        <Image source={require('../src/img/rosa.jpg')} style={styles.prodImg} />
+                        <Text style={styles.prodTxt}>Rosa Blanca de la Rosa de Guadalupe</Text>
+                    </View>
+
                     </LinearGradient>
             </ScrollView>
     </GestureHandlerRootView>
@@ -84,6 +100,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: '#000',
+        textAlign:'center',
     },
     div: {
         backgroundColor: '#ffcd45',
@@ -91,21 +108,24 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         alignContent: 'center',
         margin: 10,
+        justifyContent: 'center',
     },
     imga:{
         width: 325,
         height: 250,
         margin: 5,
+        marginTop: 20,
+        alignSelf: 'center',
     },
     encab:{
-        backgroundColor: '#aba490',
+        backgroundColor: '#1e4bb1',
         alignItems: 'center',
         width: '100%',
         marginTop: 15,
     },
     encabTxt:{
         fontSize: 30,
-        color: '#000',
+        color: '#6ab5dd',
         fontFamily: 'Helvetica, sans-serif',
         fontWeight: 'bold',
     },
