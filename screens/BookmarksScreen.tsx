@@ -23,6 +23,14 @@ export function Bookmarks (){
                         Rayman: Los Caminos de la Vida
                     </Text>
 
+                    <View style={styles.div}>
+                        <Text style={styles.text}>En esta sección puedes ver los records y los mejores marcadores de otros jugadores dentro de Rayman y los Caminos de la Vida, también puedes agregar tu propio marcador, tan solo tienes que iniciar sesión.</Text>
+                    </View>
+
+
+                    <TouchableOpacity style={styles.btnMarc}>
+                        <Text style={styles.btnTxt}>Agregar marcador</Text>
+                    </TouchableOpacity>
 
 
 
@@ -30,9 +38,6 @@ export function Bookmarks (){
                         <Text style={styles.encabTxt}>Recientes</Text>
                     </View>
 
-                    <TouchableOpacity style={styles.btnMarc}>
-                        <Text style={styles.btnTxt}>Agregar marcador</Text>
-                    </TouchableOpacity>
 
                     <View style={styles.div}>
                         <Text style={styles.tjug}>Jugador1</Text>
@@ -70,6 +75,7 @@ const styles = StyleSheet.create({
         },
         text: {
             color: '#000',
+            textAlign: 'center',
         },
         div: {
             backgroundColor: '#ffcd45',
