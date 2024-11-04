@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, json, jsonify, request
 from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -15,43 +15,41 @@ CORS(app)
 uri = "mongodb+srv://jovannaescogar9:141592@streaming.ahi3lnk.mongodb.net/?retryWrites=true&w=majority&appName=Streaming"
 
 
-# Create a new client and connect to the server
-#client = MongoClient(uri, server_api=ServerApi('1'))
 client = MongoClient(uri, server_api=pymongo.server_api.ServerApi(version="1", strict=True, deprecation_errors=True))
 
                      
 db = client.rayman_store
-collection = db.usuarios
+collection_users = db.usuarios
 
 
-
-
-# Send a ping to confirm a successful connection
-""" try:
-    db.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-except Exception as e:
-    print(e) """
 
 try:
 
-    # start example code here
-
-    # end example code here
-
+    # el ping es un mensaje que se manda a la bd para saber si hay conexión
     db.command("ping")
-
     print("Connected successfully")
-
-    # other application code
-
-    client.close()
-
 except Exception as e:
-
     raise Exception(
-
         "The following error occurred: ", e)
+
+
+
+@app.route('/listOfUsers', methods=['GET'])
+def get_users():
+    try:
+        # Agregar mensaje de impresión para verificar que se obtuvo la lista de plantas correctamente
+        print("Lista de plantas obtenida")
+
+        # Obtiene todas las plantas de la colección y excluye el campo _id
+        planets = collection_users.find({}, {'_id': 0})
+
+        #retorna la lista jsonificada
+        return jsonify(list(planets))
+
+    except Exception as e:
+        print("Error al obtener la lista de plantas:", str(e))
+        return jsonify({"error": "Ocurrió un error al obtener los usuarios"}), 500
+
 
 
 if __name__ == "__main__":
