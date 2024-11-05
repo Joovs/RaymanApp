@@ -1,47 +1,34 @@
-import React, { useState } from 'react';
-import { Text, StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
-import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler';
+import React from 'react';
+import { Text, StyleSheet, View, TouchableOpacity, TextInput  } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation  } from '@react-navigation/native';
-import { Alert } from 'react-native';
 
 
-
-export function Login (){
+export function Signup (){
 
     const navigation = useNavigation();
 
-
-    const [name, setName] = useState('');
-    const [mail, setMail] = useState('');
-    const [age, setAge] = useState('');
-    const [passw, setPassw] = useState('');
-
-    const handleRegister = async () => {
-        if (!name || !mail || !age || !passw){
-            Alert.alert('Error', '¡Ingresa todos los datos!');
-        }
-
-    };
 
     return(
         // eslint-disable-next-line react-native/no-inline-styles
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ScrollView style={styles.background}>
-            <LinearGradient
-                start={{x: 0, y: 0}}
-                end={{x: 1, y: 0}}
-                colors={['#ff7e5d', '#ff9f1f']}
-                style={styles.container}
-                >
-
-
+                <LinearGradient
+                    start={{x: 0, y: 0}}
+                    end={{x: 1, y: 0}}
+                    colors={['#ff7e5d', '#ff9f1f']}
+                    style={styles.container}
+                    >
                     <View style={styles.div}>
-                        <Text style={styles.title}>Inicio de sesión</Text>
+                        <Text style={styles.title}>Registrate!</Text>
+                        <TextInput style={styles.input} placeholder="Ingresa tu correo nombre" placeholderTextColor={'#666'}/>
                         <TextInput style={styles.input} placeholder="Ingresa tu correo electrónico" placeholderTextColor={'#666'}/>
-                        <TextInput style={styles.input} placeholder="Ingresa tu contraseña" placeholderTextColor={'#666'} />
+                        <TextInput style={styles.input} placeholder="Ingresa tu edad" placeholderTextColor={'#666'} />
+                        <TextInput style={styles.input} secureTextEntry placeholder="Ingresa tu contraseña" placeholderTextColor={'#666'} />
                         <TouchableOpacity style={styles.btnMarc}>
-                            <Text style={styles.btnTxt}>Iniciar sesión</Text>
+                            <Text style={styles.btnTxt}>Registrar Usuario</Text>
                         </TouchableOpacity>
 
 
@@ -52,17 +39,14 @@ export function Login (){
 
 
                         </Text>
-                        <Text style={styles.text}>¿Aún no tienes una cuenta? </Text>
+                        <Text style={styles.text}>¿Ya tienes una cuenta? </Text>
                         <TouchableOpacity
-                            onPress={()=>navigation.navigate('Registro')}
                             style={styles.btnSec}
+                            onPress={navigation.goBack}
                         >
-                            <Text style={styles.btnTxtSec}>Registrarme</Text>
+                            <Text style={styles.btnTxtSec}>Iniciar Sesión</Text>
                         </TouchableOpacity>
                     </View>
-
-
-
                 </LinearGradient>
             </ScrollView>
         </GestureHandlerRootView>

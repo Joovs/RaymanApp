@@ -7,6 +7,34 @@ import { Catalog } from './screens/CatalogScreen';
 import { Bookmarks } from './screens/BookmarksScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Login } from './screens/Login';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Signup } from './screens/Signup';
+
+
+const LoginStack = createNativeStackNavigator();
+
+function MyStack(){
+    return(
+        <LoginStack.Navigator
+            initialRouteName="Iniciar"
+        >
+            <LoginStack.Screen
+                name="Registro"
+                component={Signup}
+                options={{
+                    headerShown: false
+                }}
+            />
+            <LoginStack.Screen
+                name="Iniciar"
+                component={Login}
+                options={{
+                    headerShown: false
+                }}
+            />
+        </LoginStack.Navigator>
+    );
+}
 
 
 const Tab = createBottomTabNavigator();
@@ -50,7 +78,7 @@ function MyTabs(){
                 }}/>
             <Tab.Screen
                 name="Usuario"
-                component={Login}
+                component={MyStack}
                 options={{
                     tabBarLabel: 'Usuario',
                     // eslint-disable-next-line react/no-unstable-nested-components
