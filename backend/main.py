@@ -88,14 +88,11 @@ def registrar_usuario():
 # FUNCIÓN PARA VALIDAR EL USUARIO Y CONTRASEÑA
 def validar_usuario(mail, passw):
     
-    #email = collection_users.find_one({"email": mail})
     password = collection_users.find_one({"email": mail}, {"contrasena": 1, '_id': 0})
     if password:
         dato = password.get('contrasena')
     print(dato)
-
-    #if dato==passw:
-    #if bcrypt.checkpw(passw.encode('utf-8'), dato):
+    
     if check_password_hash(dato, passw):
         print('Contraseña correcta, bb')
         return True
@@ -120,10 +117,6 @@ def login ():
     print("--------")
     username = data.get('mail')
     password = data.get('passw')
-
-    #validar_usuario(username, password)
-    
-    #return jsonify({"parametros obtenidos": "{data.get('mail')}"})
 
     if validar_usuario(username, password):
         print("Login exitoso")
