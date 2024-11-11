@@ -4,7 +4,7 @@ import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation  } from '@react-navigation/native';
 import { Alert } from 'react-native';
-import axios from 'axios';
+//import axios from 'axios';
 
 
 
