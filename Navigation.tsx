@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Login } from './screens/Login';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Signup } from './screens/Signup';
+import { Usuario } from './screens/Usuario';
 
 
 const LoginStack = createNativeStackNavigator();
@@ -22,14 +23,21 @@ function MyStack(){
                 name="Registro"
                 component={Signup}
                 options={{
-                    headerShown: false
+                    headerShown: false,
                 }}
             />
             <LoginStack.Screen
                 name="Iniciar"
                 component={Login}
                 options={{
-                    headerShown: false
+                    headerShown: false,
+                }}
+            />
+            <LoginStack.Screen
+                name="Usuario"
+                component={Usuario}
+                options={{
+                    headerShown: false,
                 }}
             />
         </LoginStack.Navigator>

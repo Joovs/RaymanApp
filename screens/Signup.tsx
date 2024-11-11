@@ -45,6 +45,7 @@ export function Signup (){
             if (response.status === 200) {
                 Alert.alert('Éxito', 'Nuevo usuario registrado :)');
             // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
+            navigation.navigate('login');
             }
             else{
                 Alert.alert('Error',  jsonResponse.error );

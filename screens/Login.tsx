@@ -55,6 +55,7 @@ export function Login (){
             if (response.status === 200) {
             Alert.alert('Éxito', 'Inicio de sesión exitoso');
             // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
+            navigation.navigate('usuario');
             }
             else{
                 Alert.alert('Error',  jsonResponse.error );
