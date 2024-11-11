@@ -4,6 +4,7 @@ import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation  } from '@react-navigation/native';
 import { Alert } from 'react-native';
+import axios from 'axios';
 
 
 
@@ -11,18 +12,61 @@ export function Login (){
 
     const navigation = useNavigation();
 
-
-    const [name, setName] = useState('');
     const [mail, setMail] = useState('');
-    const [age, setAge] = useState('');
     const [passw, setPassw] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleRegister = async () => {
-        if (!name || !mail || !age || !passw){
-            Alert.alert('Error', '¡Ingresa todos los datos!');
+
+    const handleLogin = async () => {
+        if (!mail || !passw) {
+          Alert.alert('Error', 'Por favor ingresa el usuario y la contraseña');
+          return;
         }
 
+        setLoading(true);
+
+
+        try {
+            /* const response = await axios.post('http://127.0.0.1:5000/userValidation', {
+                mail,
+                passw,
+            }); */
+
+            //esta url es la que uso sin emular la app, es decir, la uso con postman
+            //const response = await fetch('http://127.0.0.1:5000/userValidation', {
+
+            //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
+            //const response = await fetch('http://192.168.0.106:5000/userValidation', {
+
+            //esta url es para emular la app desde emulador de android studio, si jaló
+            const response = await fetch('http://10.0.2.2:5000/userValidation', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  'mail': mail,
+                  'passw': passw,
+                }),
+              });
+
+              const jsonResponse = await response.json();
+
+            if (response.status === 200) {
+            Alert.alert('Éxito', 'Inicio de sesión exitoso');
+            // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
+            }
+            else{
+                Alert.alert('Error',  jsonResponse.error );
+            }
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Error', 'fallo en conxion cn el servidor');
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return(
         // eslint-disable-next-line react-native/no-inline-styles
@@ -38,9 +82,9 @@ export function Login (){
 
                     <View style={styles.div}>
                         <Text style={styles.title}>Inicio de sesión</Text>
-                        <TextInput style={styles.input} placeholder="Ingresa tu correo electrónico" placeholderTextColor={'#666'}/>
-                        <TextInput style={styles.input} placeholder="Ingresa tu contraseña" placeholderTextColor={'#666'} />
-                        <TouchableOpacity style={styles.btnMarc}>
+                        <TextInput style={styles.input} value={mail} onChangeText={setMail} placeholder="Ingresa tu correo electrónico" placeholderTextColor={'#666'}/>
+                        <TextInput style={styles.input} value={passw} onChangeText={setPassw} placeholder="Ingresa tu contraseña" placeholderTextColor={'#666'} />
+                        <TouchableOpacity style={styles.btnMarc} onPress={handleLogin} disabled={loading}>
                             <Text style={styles.btnTxt}>Iniciar sesión</Text>
                         </TouchableOpacity>
 

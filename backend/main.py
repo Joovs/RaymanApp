@@ -24,6 +24,8 @@ db = client.rayman_store
 collection_users = db.usuarios
 
 
+#variables globales
+correo_global=''
 
 try:
 
@@ -35,7 +37,14 @@ except Exception as e:
         "The following error occurred: ", e)
 
 
-# API OBTENER TODOS LOS USUARIOS
+
+
+@app.route('/', methods=['POST'])
+def home():
+    print('Hello, world')
+    return 'Hello, world'
+
+# ----------------------------------------API OBTENER TODOS LOS USUARIOS
 @app.route('/listOfUsers', methods=['GET'])
 def get_users():
     try:
@@ -51,7 +60,12 @@ def get_users():
         print("Error al obtener la lista de plantas:", str(e))
         return jsonify({"error": "Ocurrió un error al obtener los usuarios"}), 500 
     
-# API REGISTRAR USUARIO
+
+
+
+
+
+# ----------------------------------------API REGISTRAR USUARIO
 @app.route('/userRegistration', methods=['POST'])
 def registrar_usuario():
     #esto es para obtener el cuerpo de la solicitud
@@ -85,7 +99,12 @@ def registrar_usuario():
         return jsonify({"error": "Ocurrió un error al hacer el registro"}), 500 
 
 
-# FUNCIÓN PARA VALIDAR EL USUARIO Y CONTRASEÑA
+
+
+
+
+
+# ----------------------------------------FUNCIÓN PARA VALIDAR EL USUARIO Y CONTRASEÑA
 def validar_usuario(mail, passw):
     
     password = collection_users.find_one({"email": mail}, {"contrasena": 1, '_id': 0})
@@ -120,14 +139,53 @@ def login ():
 
     if validar_usuario(username, password):
         print("Login exitoso")
+        correo_global= str(username)
+        print(correo_global)
         return jsonify({"message": "Login exitoso"}), 200
     else:
         return jsonify({"error": "Usuario o contraseña incorrectos"}), 401
+    
+#----------------------------------------metodo para CERRAR sesion 
+def logout():
+    correo_global=''
+    return jsonify({"message": "Cesión cerrada, hasta luego :)"}), 200
+    
+
+
+#----------------------------------------metodo para obtener sesion 
+def Sesión():
+    if correo_global=='':
+        return False
+    else:
+        return True
+
    
 
         
 
     
+
+
+# ----------------------------------------API actualizar contraseña
+@app.route('/updatePassword', methods=['PUT'])
+def actualizarContrasena():
+    print(correo_global)
+    data = request.json
+    new_passw = data.get('passw')
+
+    if not data or not data.get('passw'):
+        print('Faltan datos bb')
+        return jsonify({'error': 'Faltan datos requeridos bby'}), 400
+    
+    try:
+        print(correo_global)
+        collection_users.update_one({"email": correo_global}, {"$set": {"contrasena": new_passw}})
+        print(correo_global)
+        print(collection_users.find_one({"email": correo_global}, {"contrasena": 1, '_id': 0}))
+        return jsonify({"mensaje": "Cambios guardados!"})
+    except Exception as e:
+        print("Error al obtener registrar el usuario:", str(e))
+        return jsonify({"error": "Ocurrió un error al hacer el registro"}), 500 
 
 
 
