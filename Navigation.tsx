@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 //importar mis screens
@@ -10,6 +10,8 @@ import { Login } from './screens/Login';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Signup } from './screens/Signup';
 import { Usuario } from './screens/Usuario';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ProtectedRoute } from './tokens/ProtectedRoute';
 
 
 const LoginStack = createNativeStackNavigator();
@@ -58,49 +60,93 @@ function MyTabs(){
         >
             <Tab.Screen
                 name="Inicio"
-                component={Home}
                 options={{
                     tabBarLabel: 'Inicio',
                     // eslint-disable-next-line react/no-unstable-nested-components
                     tabBarIcon: () => (<Icon name="home" size={30} color="#1e4bb1" />),
                     headerShown: false,
                 }}
-                />
+            >
+                {() => (
+                    <ProtectedRoute>
+                        <Home />
+                    </ProtectedRoute>
+                )}
+            </Tab.Screen>
+
+
             <Tab.Screen
                 name="Catálogo"
-                component={Catalog}
                 options={{
                     tabBarLabel: 'Catálogo',
                     // eslint-disable-next-line react/no-unstable-nested-components
                     tabBarIcon: () => (<Icon name="book" size={30} color="#1e4bb1" />),
                     headerShown: false,
-                }}/>
+                }}
+            >
+                {() => (
+                    <ProtectedRoute>
+                        <Catalog />
+                    </ProtectedRoute>
+                )}
+            </Tab.Screen>
+
+
             <Tab.Screen
                 name="Marcadores"
-                component={Bookmarks}
                 options={{
                     tabBarLabel: 'Marcadores',
                     // eslint-disable-next-line react/no-unstable-nested-components
                     tabBarIcon: () => (<Icon name="paperclip" size={30} color="#1e4bb1" />),
                     headerShown: false,
-                }}/>
+                }}
+            >
+                {() => (
+                    <ProtectedRoute>
+                        <Bookmarks />
+                    </ProtectedRoute>
+                )}
+            </Tab.Screen>
+
+
             <Tab.Screen
                 name="Usuario"
-                component={MyStack}
                 options={{
                     tabBarLabel: 'Usuario',
                     // eslint-disable-next-line react/no-unstable-nested-components
                     tabBarIcon: () => (<Icon name="user" size={30} color="#1e4bb1" />),
                     headerShown: false,
-                }}/>
+                }}
+            >
+                {() => (
+                    <ProtectedRoute>
+                        <Usuario />
+                    </ProtectedRoute>
+                )}
+            </Tab.Screen>
         </Tab.Navigator>
     );
 }
 
 export default function Navigation () {
+
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        const checkAuth = async () => {
+            const token = await AsyncStorage.getItem('userToken');
+            setIsAuthenticated(!!token); // Autenticado si hay un token
+        };
+        checkAuth();
+    }, []);
+
     return (
         <NavigationContainer>
-            <MyTabs />
+            {isAuthenticated ? (
+                    <MyTabs />
+                ) : (
+                    <MyStack />
+                )}
         </NavigationContainer>
     );
 }

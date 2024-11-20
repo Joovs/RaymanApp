@@ -1,27 +1,48 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { Text, StyleSheet, View, Image, TouchableOpacity  } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+import { removeToken } from '../tokens/tokenStorage';
+import { getDecodedToken } from '../tokens/AuthUtils';
 
 
 
 export function Usuario (){
 
+    const navigation = useNavigation();
+
     const [loading, setLoading] = useState(false);
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const decodedToken = await getDecodedToken(); // Obtén los datos decodificados
+            if (decodedToken) {
+                setUserData(decodedToken); // Guarda los datos del usuario
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleCerrar = async () => {
 
         setLoading(true);
 
         try{
-
+            await removeToken(); // Borra el token
+            navigation.navigate('Login');
         }catch(error){
             console.log(error);
         }finally{
             setLoading(false);
         }
+
+    };
+
+    const handleChange = async () => {
 
     };
 
@@ -40,7 +61,16 @@ export function Usuario (){
                     <View style={styles.div}>
                         <Text style={styles.title}>Usuario</Text>
                         <Image source={require('../src/icons/usuario.png')}/>
-                        <Text>Nombre:</Text>
+                        {userData ? (
+                            <>
+                                <Text style={styles.title}>¡Hola, {userData.username}!</Text>
+                            </>
+                        ) : (
+                            <Text style={styles.text}>Cargando datos del usuario...</Text>
+                        )}
+                        <TouchableOpacity style={styles.btnSec} onPress={handleChange}>
+                            <Text style={styles.btnTxt}>Cambiar contraseña</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity style={styles.btnMarc} onPress={handleCerrar} disabled={loading}>
                             <Text style={styles.btnTxt}>Cerrar sesión</Text>
                         </TouchableOpacity>
@@ -64,6 +94,8 @@ const styles = StyleSheet.create({
     },
     background:{
         backgroundColor: 'linear-gradient(to right, blue, pink)',
+        height: '100%',
+        width: '100%',
     },
     title: {
         fontSize: 40,

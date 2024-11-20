@@ -5,9 +5,16 @@ from pymongo.server_api import ServerApi
 import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from datetime import timedelta
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+
+app.config['JWT_SECRET_KEY'] = 'zanahorias'  
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=10)  # El token expira en 10 mins
+
+jwt = JWTManager(app)
 
 # Habilitar CORS para permitir solicitudes desde React Native
 CORS(app)
@@ -139,12 +146,14 @@ def login ():
 
     if validar_usuario(username, password):
         print("Login exitoso")
-        correo_global= str(username)
+        access_token = create_access_token(identity=username)
         print(correo_global)
-        return jsonify({"message": "Login exitoso"}), 200
+        return jsonify({"message": "Login exitoso", "token": access_token}), 200
     else:
         return jsonify({"error": "Usuario o contraseña incorrectos"}), 401
-    
+
+
+"""   
 #----------------------------------------metodo para CERRAR sesion 
 def logout():
     correo_global=''
@@ -187,6 +196,13 @@ def actualizarContrasena():
         print("Error al obtener registrar el usuario:", str(e))
         return jsonify({"error": "Ocurrió un error al hacer el registro"}), 500 
 
+ """
+
+@app.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify({"message": f"Hola {current_user}, estás viendo una ruta protegida"}), 200
 
 
 if __name__ == "__main__":

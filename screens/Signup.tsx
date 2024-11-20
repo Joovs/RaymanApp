@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, TextInput  } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ScrollView } from 'react-native-gesture-handler';
+//import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation  } from '@react-navigation/native';
 import { Alert } from 'react-native';
@@ -15,7 +15,7 @@ export function Signup (){
     const [mail, setMail] = useState('');
     const [age, setAge] = useState('');
     const [passw, setPassw] = useState('');
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const handleRegister = async () => {
         if (!name || !mail || !age || !passw){
@@ -64,7 +64,7 @@ export function Signup (){
     return(
         // eslint-disable-next-line react-native/no-inline-styles
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ScrollView style={styles.background}>
+            <View style={styles.background}>
                 <LinearGradient
                     start={{x: 0, y: 0}}
                     end={{x: 1, y: 0}}
@@ -98,7 +98,7 @@ export function Signup (){
                         </TouchableOpacity>
                     </View>
                 </LinearGradient>
-            </ScrollView>
+            </View>
         </GestureHandlerRootView>
     );
 }
@@ -112,6 +112,8 @@ const styles = StyleSheet.create({
     },
     background:{
         backgroundColor: 'linear-gradient(to right, blue, pink)',
+        height: '100%',
+        width: '100%',
     },
     title: {
         fontSize: 40,

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Text, StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { GestureHandlerRootView, TextInput } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation  } from '@react-navigation/native';
 import { Alert } from 'react-native';
 //import axios from 'axios';
+import { saveToken } from '../tokens/tokenStorage';
 
 
 
@@ -55,7 +56,9 @@ export function Login (){
             if (response.status === 200) {
             Alert.alert('Éxito', 'Inicio de sesión exitoso');
             // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
-            navigation.navigate('usuario');
+            const token = jsonResponse.token;
+            await saveToken(token);
+            navigation.navigate('Usuario');
             }
             else{
                 Alert.alert('Error',  jsonResponse.error );
@@ -72,7 +75,7 @@ export function Login (){
     return(
         // eslint-disable-next-line react-native/no-inline-styles
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ScrollView style={styles.background}>
+            <View style={styles.background}>
             <LinearGradient
                 start={{x: 0, y: 0}}
                 end={{x: 1, y: 0}}
@@ -109,7 +112,7 @@ export function Login (){
 
 
                 </LinearGradient>
-            </ScrollView>
+            </View>
         </GestureHandlerRootView>
     );
 }
@@ -123,6 +126,8 @@ const styles = StyleSheet.create({
     },
     background:{
         backgroundColor: 'linear-gradient(to right, blue, pink)',
+        height: '100%',
+        width: '100%',
     },
     title: {
         fontSize: 40,
