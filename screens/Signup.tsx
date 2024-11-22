@@ -15,7 +15,7 @@ export function Signup (){
     const [mail, setMail] = useState('');
     const [age, setAge] = useState('');
     const [passw, setPassw] = useState('');
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const handleRegister = async () => {
         if (!name || !mail || !age || !passw){
@@ -42,7 +42,7 @@ export function Signup (){
             const jsonResponse = await response.json();
 
             //en este if, existen detallitos porque me dijo que error, pero si se regitró :):
-            if (response.status === 200) {
+            if (response.ok) {
                 Alert.alert('Éxito', 'Nuevo usuario registrado :)');
             // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
             navigation.navigate('login');
@@ -73,7 +73,7 @@ export function Signup (){
                     >
                     <View style={styles.div}>
                         <Text style={styles.title}>Registrate!</Text>
-                        <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="Ingresa tu correo nombre" placeholderTextColor={'#666'}/>
+                        <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="Ingresa tu nombre" placeholderTextColor={'#666'}/>
                         <TextInput style={styles.input} value={mail} onChangeText={setMail} placeholder="Ingresa tu correo electrónico" placeholderTextColor={'#666'}/>
                         <TextInput style={styles.input} value={age} onChangeText={setAge} placeholder="Ingresa tu edad" placeholderTextColor={'#666'} />
                         <TextInput style={styles.input} value={passw} onChangeText={setPassw} secureTextEntry placeholder="Ingresa tu contraseña" placeholderTextColor={'#666'} />

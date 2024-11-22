@@ -4,7 +4,7 @@ import { Text, StyleSheet, View, Image, TouchableOpacity  } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import { removeToken } from '../tokens/tokenStorage';
+import { getToken, removeToken } from '../tokens/tokenStorage';
 import { getDecodedToken } from '../tokens/AuthUtils';
 
 
@@ -13,13 +13,30 @@ export function Usuario (){
 
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState('');
+
 
     useEffect(() => {
-        const fetchUserData = async () => {
-            const decodedToken = await getDecodedToken(); // Obtén los datos decodificados
-            if (decodedToken) {
-                setUserData(decodedToken); // Guarda los datos del usuario
+                const fetchUserData = async () => {
+            const token = await getToken();
+            //esta url es la que uso sin emular la app, es decir, la uso con postman
+            //const response = await fetch('http://127.0.0.1:5000/userValidation', {
+
+            //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
+            const response = await fetch('http://192.168.0.102:5000/protected', {
+
+            //esta url es para emular la app desde emulador de android studio, si jaló
+            //const response = await fetch('http://10.0.2.2:5000/protected', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'text/plain',
+                },
+            });
+
+            if (response.ok){
+                const mail = await response.text();
+                setUserData(mail);
             }
         };
 
@@ -43,6 +60,7 @@ export function Usuario (){
     };
 
     const handleChange = async () => {
+        navigation.navigate('ChangePassw');
     };
 
 
@@ -64,7 +82,7 @@ export function Usuario (){
 
                         {userData ? (
                             <>
-                                <Text style={styles.title}>¡Hola, {userData.username}!</Text>
+                                <Text style={styles.title}>¡Hola, {userData}!</Text>
                             </>
                         ) : (
                             <Text style={styles.text}>Cargando datos del usuario...</Text>

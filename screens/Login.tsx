@@ -37,10 +37,10 @@ export function Login (){
             //const response = await fetch('http://127.0.0.1:5000/userValidation', {
 
             //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
-            //const response = await fetch('http://192.168.0.106:5000/userValidation', {
+            const response = await fetch('http://192.168.0.102:5000/userValidation', {
 
             //esta url es para emular la app desde emulador de android studio, si jaló
-            const response = await fetch('http://10.0.2.2:5000/userValidation', {
+            //const response = await fetch('http://10.0.2.2:5000/userValidation', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
