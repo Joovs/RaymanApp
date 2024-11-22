@@ -1,12 +1,13 @@
 from flask import Flask, json, jsonify, request
 from flask_cors import CORS
+from jwt import ExpiredSignatureError, InvalidTokenError
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -68,6 +69,35 @@ def get_users():
     
 
 
+# Ruta para validar el token
+@app.route('/validateToken', methods=['POST'])
+def validate_token():
+    token = request.headers.get('Authorization')
+    
+    if not token or not token.startswith("Bearer "):
+        return jsonify({"error": "Token no proporcionado"}), 401
+
+    # Quitar el prefijo "Bearer "
+    token = token.split(" ")[1]
+
+    try:
+        # Decodificar el token
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        
+        # Validar que no haya expirado
+        if payload.get('exp') < datetime.utcnow().timestamp():
+            return jsonify({"error": "Token expirado"}), 401
+
+        # Token válido, puedes retornar datos adicionales si es necesario
+        return jsonify({"message": "Token válido", "user_data": payload}), 200
+    except ExpiredSignatureError:
+        return jsonify({"error": "Token expirado"}), 401
+    except InvalidTokenError:
+        return jsonify({"error": "Token inválido"}), 401
+
+    
+
+
 
 
 
@@ -114,9 +144,14 @@ def registrar_usuario():
 def validar_usuario(mail, passw):
     
     password = collection_users.find_one({"email": mail}, {"contrasena": 1, '_id': 0})
+    dato = None
     if password:
         dato = password.get('contrasena')
     print(dato)
+
+    if dato is None:
+        print("No se encontró el usuario o la contraseña no está configurada")
+        return False
     
     if check_password_hash(dato, passw):
         print('Contraseña correcta, bb')
@@ -176,12 +211,15 @@ def actualizarContrasena():
         return jsonify({"error": "Ocurrió un error al hacer el registro"}), 500 
 
 
+
+#ruta para obtener el usuario desde el token
 @app.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
     current_user = get_jwt_identity()
-    return jsonify({"message": f"Hola {current_user}, estás viendo una ruta protegida"}), 200
+    #return jsonify({"message": f"Hola {current_user}, estás viendo una ruta protegida"}), 200
+    return str(current_user)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
