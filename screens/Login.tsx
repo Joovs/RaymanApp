@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation  } from '@react-navigation/native';
 import { Alert } from 'react-native';
 //import axios from 'axios';
+import { saveToken } from '../tokens/tokenStorage';
 
 
 
@@ -53,9 +54,10 @@ export function Login (){
               const jsonResponse = await response.json();
 
             if (response.status === 200) {
-            Alert.alert('Éxito', 'Inicio de sesión exitoso');
-            // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
-            navigation.navigate('usuario');
+                // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
+                const token = jsonResponse.token;
+                await saveToken(token); // Guarda el tokena
+                navigation.navigate('Usuario');
             }
             else{
                 Alert.alert('Error',  jsonResponse.error );

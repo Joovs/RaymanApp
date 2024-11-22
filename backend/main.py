@@ -5,12 +5,20 @@ from pymongo.server_api import ServerApi
 import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from datetime import timedelta
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 # Habilitar CORS para permitir solicitudes desde React Native
 CORS(app)
+
+
+app.config['JWT_SECRET_KEY'] = 'zanahorias'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=10)    # El token durará 10 mins
+
+jwt = JWTManager(app)
 
 # en esta conexión agregué 'tlsAllowInvalidCertificates=True' para ver si es un error, despues debes quitarlo ya que no es recomendable para un despliegue
 #uri = "mongodb+srv://jovannaescogar9:141592@streaming.ahi3lnk.mongodb.net/?retryWrites=true&w=majority&appName=Streaming&tlsAllowInvalidCertificates=true"
@@ -139,12 +147,14 @@ def login ():
 
     if validar_usuario(username, password):
         print("Login exitoso")
-        correo_global= str(username)
-        print(correo_global)
-        return jsonify({"message": "Login exitoso"}), 200
+        access_token = create_access_token(identity=username)
+        
+        return jsonify({"message": "Login exitoso", "token": access_token}), 200
     else:
         return jsonify({"error": "Usuario o contraseña incorrectos"}), 401
     
+
+"""     
 #----------------------------------------metodo para CERRAR sesion 
 def logout():
     correo_global=''
@@ -186,7 +196,13 @@ def actualizarContrasena():
     except Exception as e:
         print("Error al obtener registrar el usuario:", str(e))
         return jsonify({"error": "Ocurrió un error al hacer el registro"}), 500 
+ """
 
+@app.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify({"message": f"Hola {current_user}, estás viendo una ruta protegida"}), 200
 
 
 if __name__ == "__main__":
