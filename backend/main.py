@@ -32,8 +32,6 @@ db = client.rayman_store
 collection_users = db.usuarios
 
 
-#variables globales
-correo_global=''
 
 try:
 
@@ -154,49 +152,29 @@ def login ():
         return jsonify({"error": "Usuario o contraseña incorrectos"}), 401
     
 
-"""     
-#----------------------------------------metodo para CERRAR sesion 
-def logout():
-    correo_global=''
-    return jsonify({"message": "Cesión cerrada, hasta luego :)"}), 200
-    
 
 
-#----------------------------------------metodo para obtener sesion 
-def Sesión():
-    if correo_global=='':
-        return False
-    else:
-        return True
-
-   
-
-        
-
-    
 
 
 # ----------------------------------------API actualizar contraseña
 @app.route('/updatePassword', methods=['PUT'])
 def actualizarContrasena():
-    print(correo_global)
     data = request.json
     new_passw = data.get('passw')
+    correo = data.get('correo')
 
-    if not data or not data.get('passw'):
+    if not data or not data.get('passw') or not data.get('correo'):
         print('Faltan datos bb')
         return jsonify({'error': 'Faltan datos requeridos bby'}), 400
     
     try:
-        print(correo_global)
-        collection_users.update_one({"email": correo_global}, {"$set": {"contrasena": new_passw}})
-        print(correo_global)
-        print(collection_users.find_one({"email": correo_global}, {"contrasena": 1, '_id': 0}))
+        collection_users.update_one({"email": correo}, {"$set": {"contrasena": generate_password_hash(new_passw)}})
+        print(collection_users.find_one({"email": correo}, {"contrasena": 1, '_id': 0}))
         return jsonify({"mensaje": "Cambios guardados!"})
     except Exception as e:
         print("Error al obtener registrar el usuario:", str(e))
         return jsonify({"error": "Ocurrió un error al hacer el registro"}), 500 
- """
+
 
 @app.route('/protected', methods=['GET'])
 @jwt_required()
