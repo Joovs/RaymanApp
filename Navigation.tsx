@@ -10,8 +10,8 @@ import { Login } from './screens/Login';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Signup } from './screens/Signup';
 import { Usuario } from './screens/Usuario';
-import { ProtectedRoute } from './tokens/ProtectedRoute';
-import { AsyncStorage } from 'react-native';
+import { ProtectedRoute } from './tokens/protectedRoute';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const LoginStack = createNativeStackNavigator();
