@@ -14,4 +14,4 @@ export const getDecodedToken = async () => {
         console.error('Error al decodificar el token:', error);
         return null;
     }
-}
+};
