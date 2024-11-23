@@ -12,9 +12,11 @@ import { Signup } from './screens/Signup';
 import { Usuario } from './screens/Usuario';
 import { ProtectedRoute } from './tokens/protectedRoute';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { ChangePassw } from './screens/ChangePassw';
 
 
 const LoginStack = createNativeStackNavigator();
+const UsuarioStak = createNativeStackNavigator();
 
 function MyStack(){
     return(
@@ -36,8 +38,8 @@ function MyStack(){
                 }}
             />
             <LoginStack.Screen
-                name="Usuario"
-                component={Usuario}
+                name="mainTabs"
+                component={MyTabs}
                 options={{
                     headerShown: false,
                 }}
@@ -45,6 +47,26 @@ function MyStack(){
         </LoginStack.Navigator>
     );
 }
+
+function UserStack(){
+    return(
+        <UsuarioStak.Navigator
+        initialRouteName="User"
+    >
+        <UsuarioStak.Screen
+            name="User"
+            component={Usuario}
+        />
+        <UsuarioStak.Screen
+            name="Cambiar"
+            component={ChangePassw}
+        />
+    </UsuarioStak.Navigator>
+    );
+
+}
+
+
 
 
 const Tab = createBottomTabNavigator();
@@ -105,19 +127,14 @@ function MyTabs(){
             </Tab.Screen>
             <Tab.Screen
                 name="Usuario"
+                component={UserStack}
                 options={{
                     tabBarLabel: 'Usuario',
                     // eslint-disable-next-line react/no-unstable-nested-components
                     tabBarIcon: () => (<Icon name="user" size={30} color="#1e4bb1" />),
                     headerShown: false,
                 }}
-            >
-                {() => (
-                    <ProtectedRoute>
-                        <Usuario />
-                    </ProtectedRoute>
-                )}
-            </Tab.Screen>
+            />
         </Tab.Navigator>
     );
 }

@@ -60,7 +60,7 @@ export function ChangePassw (){
 
                 if (response2.ok){
                     Alert.alert('Éxito', '¡Contraseña cambiada correctamente!');
-                    navigation.navigate('Usuario');
+                    navigation.navigate('User');
                 }
             }catch{
                 Alert.alert('Error', 'Error al obtener el correo desde el token');
@@ -86,11 +86,10 @@ export function ChangePassw (){
                     style={styles.container}
                 >
                     <View style={styles.div}>
-                    <Text style={styles.title}>Registrate!</Text>
-                        <Text>Ingresa tu nueva contraseña:</Text>
-                        <TextInput style={styles.input} value={newPassw} onChangeText={setNewPassw} placeholder="Ingresa tu correo nombre" placeholderTextColor={'#666'}/>
+                    <Text style={styles.title}>Configuarar contraseña</Text>
+                        <TextInput style={styles.input} value={newPassw} onChangeText={setNewPassw} placeholder="Ingresa tu nueva contraseña" placeholderTextColor={'#666'}/>
                         <TouchableOpacity style={styles.btnMarc} onPress={handleChange} disabled={loading}>
-                            <Text style={styles.btnTxt}>Registrar Usuario</Text>
+                            <Text style={styles.btnTxt}>Realizar cambio</Text>
                         </TouchableOpacity>
 
 
