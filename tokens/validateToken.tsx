@@ -4,11 +4,10 @@ export const validateToken = async () => {
     const token = await getToken(); // Obtén el token
 
     try {
-        const response = await fetch('http://10.0.2.2:5000/validateToken', {
+        const response = await fetch('http://192.168.0.102:5000/validateToken', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
             },
         });
 

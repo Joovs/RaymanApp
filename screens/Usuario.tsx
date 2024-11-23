@@ -30,7 +30,6 @@ export function Usuario (){
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'text/plain',
                 },
             });
 
@@ -60,7 +59,7 @@ export function Usuario (){
     };
 
     const handleChange = async () => {
-        navigation.navigate('ChangePassw');
+        navigation.navigate('Cambiar');
     };
 
 

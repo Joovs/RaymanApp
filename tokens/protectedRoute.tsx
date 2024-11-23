@@ -8,22 +8,24 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigation = useNavigation();
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
+                setLoading(true);
                 const isValid = await validateToken(); // Validar el token con el backend
                 if (isValid) {
                     setIsAuthenticated(true);
+                    setLoading(false);
                 } else {
-                    navigation.navigate('Login'); // Redirigir si no está autenticado
+                    navigation.navigate('Iniciar'); // Redirigir si no está autenticado
                 }
             } catch (error) {
                 console.error('Error al verificar autenticación (desde protectedRoute):', error);
-                navigation.navigate('Login');
+                navigation.navigate('Iniciar');
             } finally {
                 setLoading(false);
             }

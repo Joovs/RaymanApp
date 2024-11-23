@@ -51,13 +51,16 @@ export function Login (){
                 }),
               });
 
+              console.log(response.status);
+              console.log(await response.text());
+
               const jsonResponse = await response.json();
 
-            if (response.status === 200) {
+            if (response.ok) {
                 // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
                 const token = jsonResponse.token;
                 await saveToken(token); // Guarda el tokena
-                navigation.navigate('Usuario');
+                navigation.navigate('mainTabs');
             }
             else{
                 Alert.alert('Error',  jsonResponse.error );

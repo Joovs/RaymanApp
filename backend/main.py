@@ -5,8 +5,8 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_bcrypt import Bcrypt # type: ignore
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, decode_token
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
@@ -82,19 +82,19 @@ def validate_token():
 
     try:
         # Decodificar el token
-        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        
+        decoded_token = decode_token(token)
+
         # Validar que no haya expirado
-        if payload.get('exp') < datetime.utcnow().timestamp():
+        exp = decoded_token.get('exp')
+        if exp < datetime.utcnow().timestamp():
             return jsonify({"error": "Token expirado"}), 401
 
-        # Token válido, puedes retornar datos adicionales si es necesario
-        return jsonify({"message": "Token válido", "user_data": payload}), 200
-    except ExpiredSignatureError:
-        return jsonify({"error": "Token expirado"}), 401
-    except InvalidTokenError:
-        return jsonify({"error": "Token inválido"}), 401
+        # Obtener información adicional si es necesario
+        identity = decoded_token.get('identity')
+        return jsonify({"message": "Token válido", "user_data": identity}), 200
 
+    except Exception as e:
+        return jsonify({"error": str(e)}), 401
     
 
 
@@ -182,7 +182,7 @@ def login ():
         print("Login exitoso")
         access_token = create_access_token(identity=username)
         
-        return jsonify({"message": "Login exitoso", "token": access_token}), 200
+        return str(access_token), 200
     else:
         return jsonify({"error": "Usuario o contraseña incorrectos"}), 401
     
