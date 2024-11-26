@@ -1,0 +1,5 @@
+es importante mantener las url y las ip actualizadas en los siguientes archivos:
+- validate token
+- change passw (doble)
+- Login
+- Usuario

@@ -93,6 +93,7 @@ function MyTabs(){
         >
             <Tab.Screen
                 name="Inicio"
+                component={Home}
                 options={{
                     tabBarLabel: 'Inicio',
                     // eslint-disable-next-line react/no-unstable-nested-components
@@ -100,11 +101,11 @@ function MyTabs(){
                     headerShown: false,
                 }}
             >
-                {() => (
+                {/* {() => (
                     <ProtectedRoute>
                         <Home />
                     </ProtectedRoute>
-                )}
+                )} */}
             </Tab.Screen>
             <Tab.Screen
                 name="Catálogo"

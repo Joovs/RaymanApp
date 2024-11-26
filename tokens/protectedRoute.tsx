@@ -19,11 +19,11 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
                 if (isValid) {
                     setIsAuthenticated(true);
                 } else {
-                    navigation.navigate('Login'); // Redirigir si no está autenticado
+                    navigation.navigate('Iniciar'); // Redirigir si no está autenticado
                 }
             } catch (error) {
                 console.error('Error al verificar autenticación (desde protectedRoute):', error);
-                navigation.navigate('Login');
+                navigation.navigate('Iniciar');
             } finally {
                 setLoading(false);
             }
