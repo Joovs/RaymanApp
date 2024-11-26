@@ -6,8 +6,9 @@ from pymongo.server_api import ServerApi
 import pymongo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from datetime import datetime, timedelta
+from flask_jwt_extended import JWTManager, create_access_token, decode_token, jwt_required, get_jwt_identity
+from datetime import datetime, timedelta, timezone
+from pprint import pprint
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -15,6 +16,7 @@ bcrypt = Bcrypt(app)
 # Habilitar CORS para permitir solicitudes desde React Native
 CORS(app)
 
+now = datetime.now(timezone.utc)
 
 app.config['JWT_SECRET_KEY'] = 'zanahorias'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=10)    # El token durará 10 mins
@@ -68,34 +70,6 @@ def get_users():
         return jsonify({"error": "Ocurrió un error al obtener los usuarios"}), 500 
     
 
-
-# Ruta para validar el token
-@app.route('/validateToken', methods=['POST'])
-def validate_token():
-    token = request.headers.get('Authorization')
-    
-    if not token or not token.startswith("Bearer "):
-        return jsonify({"error": "Token no proporcionado"}), 401
-
-    # Quitar el prefijo "Bearer "
-    token = token.split(" ")[1]
-
-    try:
-        # Decodificar el token
-        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        
-        # Validar que no haya expirado
-        if payload.get('exp') < datetime.utcnow().timestamp():
-            return jsonify({"error": "Token expirado"}), 401
-
-        # Token válido, puedes retornar datos adicionales si es necesario
-        return jsonify({"message": "Token válido", "user_data": payload}), 200
-    except ExpiredSignatureError:
-        return jsonify({"error": "Token expirado"}), 401
-    except InvalidTokenError:
-        return jsonify({"error": "Token inválido"}), 401
-
-    
 
 
 
@@ -219,6 +193,38 @@ def protected():
     current_user = get_jwt_identity()
     #return jsonify({"message": f"Hola {current_user}, estás viendo una ruta protegida"}), 200
     return str(current_user)
+
+
+# Ruta para validar el token
+@app.route('/validateToken', methods=['POST'])
+def validate_token():
+    token = request.headers.get('Authorization')
+    
+    if not token or not token.startswith("Bearer "):
+        return jsonify({"error": "Token no proporcionado"}), 401
+
+    # Quitar el prefijo "Bearer "
+    token = token.split(" ")[1]
+
+    try:
+        # Decodificar el token
+        decoded_token = decode_token(token)
+        pprint(decoded_token)
+
+        # Validar que no haya expirado
+        exp = decoded_token.get('exp')
+        if exp < now.timestamp():
+            return jsonify({"error": "Token expirado"}), 401
+
+        # Obtener información adicional si es necesario
+        identity = decoded_token.get('sub')
+        return jsonify({"message": "Token válido", "user_data": identity}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 401
+    
+
+
 
 
 if __name__ == "__main__":

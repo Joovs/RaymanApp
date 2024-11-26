@@ -6,6 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { getToken, removeToken } from '../tokens/tokenStorage';
 import { getDecodedToken } from '../tokens/AuthUtils';
+import { ProtectedRoute } from '../tokens/protectedRoute';
 
 
 
@@ -17,7 +18,7 @@ export function Usuario (){
 
 
     useEffect(() => {
-                const fetchUserData = async () => {
+        const fetchUserData = async () => {
             const token = await getToken();
             //esta url es la que uso sin emular la app, es decir, la uso con postman
             //const response = await fetch('http://127.0.0.1:5000/userValidation', {
@@ -39,6 +40,7 @@ export function Usuario (){
             if (response.ok){
                 const mail = await response.text();
                 setUserData(mail);
+                console.log(mail);
             }
         };
 
@@ -52,7 +54,7 @@ export function Usuario (){
 
         try{
             await removeToken(); // Borra el token
-            navigation.navigate('Login'); // Redirige al login
+            
         }catch(error){
             console.log(error);
         }finally{
