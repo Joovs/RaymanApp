@@ -190,6 +190,7 @@ def actualizarContrasena():
 @app.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
+    print("este es la info de mi token",get_jwt_identity())
     current_user = get_jwt_identity()
     #return jsonify({"message": f"Hola {current_user}, estás viendo una ruta protegida"}), 200
     return str(current_user)

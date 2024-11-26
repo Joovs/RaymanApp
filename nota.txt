@@ -3,3 +3,4 @@ es importante mantener las url y las ip actualizadas en los siguientes archivos:
 - change passw (doble)
 - Login
 - Usuario
+- Singup
