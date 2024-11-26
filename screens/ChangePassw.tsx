@@ -25,6 +25,7 @@ export function ChangePassw (){
 
             //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
             const response = await fetch('http://192.168.0.102:5000/protected', {
+            //const response = await fetch('http://172.31.99.221:5000/protected', {
 
             //esta url es para emular la app desde emulador de android studio, si jaló
             //const response = await fetch('http://10.0.2.2:5000/protected', {
@@ -44,6 +45,7 @@ export function ChangePassw (){
             try{
                 //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
                 const response2 = await fetch('http://192.168.0.102:5000/updatePassword', {
+                //const response2 = await fetch('http://172.31.99.221:5000/updatePassword', {
 
                 //esta url es para emular la app desde emulador de android studio, si jaló
                 //const response = await fetch('http://10.0.2.2:5000/updatePassword', {
@@ -72,6 +74,10 @@ export function ChangePassw (){
         }
     };
 
+    const handleVolver = async () => {
+        navigation.navigate('User');
+    };
+
 
 
 
@@ -90,6 +96,9 @@ export function ChangePassw (){
                         <TextInput style={styles.input} value={newPassw} onChangeText={setNewPassw} placeholder="Ingresa tu nueva contraseña" placeholderTextColor={'#666'}/>
                         <TouchableOpacity style={styles.btnMarc} onPress={handleChange} disabled={loading}>
                             <Text style={styles.btnTxt}>Realizar cambio</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btnSec} onPress={handleVolver} disabled={loading}>
+                            <Text style={styles.btnTxtSec}>Volver</Text>
                         </TouchableOpacity>
 
 

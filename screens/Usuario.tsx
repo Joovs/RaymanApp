@@ -24,6 +24,8 @@ export function Usuario (){
 
             //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
             const response = await fetch('http://192.168.0.102:5000/protected', {
+            //const response = await fetch('http://172.31.99.221:5000/protected', {
+
 
             //esta url es para emular la app desde emulador de android studio, si jaló
             //const response = await fetch('http://10.0.2.2:5000/protected', {
@@ -60,7 +62,7 @@ export function Usuario (){
     };
 
     const handleChange = async () => {
-        navigation.navigate('ChangePassw');
+        navigation.navigate('Cambiar');
     };
 
 
@@ -90,7 +92,7 @@ export function Usuario (){
 
 
                         <TouchableOpacity style={styles.btnSec} onPress={handleChange} disabled={loading}>
-                            <Text style={styles.btnTxt}>Cambiar contraseña</Text>
+                            <Text style={styles.btnTxtSec}>Cambiar contraseña</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.btnMarc} onPress={handleCerrar} disabled={loading}>
                             <Text style={styles.btnTxt}>Cerrar sesión</Text>

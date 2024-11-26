@@ -51,16 +51,27 @@ function MyStack(){
 function UserStack(){
     return(
         <UsuarioStak.Navigator
-        initialRouteName="User"
-    >
-        <UsuarioStak.Screen
-            name="User"
-            component={Usuario}
-        />
-        <UsuarioStak.Screen
-            name="Cambiar"
-            component={ChangePassw}
-        />
+            initialRouteName="User"
+        >
+            <UsuarioStak.Screen
+                name="User"
+                component={Usuario}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <UsuarioStak.Screen
+                name="Cambiar"
+                component={ChangePassw}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            {/* Hay un detalle en esta parte, necesito pensar bien la navegación */}
+            <UsuarioStak.Screen
+                name="Login"
+                component={MyStack}
+            />
     </UsuarioStak.Navigator>
     );
 
