@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import React from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, TextInput, Alert  } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -15,20 +15,16 @@ export function ChangePassw (){
     const [newPassw, setNewPassw] = useState('');
     const [correo, setCorreo] = useState('');
 
-    const handleChange = async () => {
-        setLoading(true);
-        //petición a la api para cambiar contraseña
+    const obtenerCorreo = async () => {
         const token = await getToken();
         try{
             //esta url es la que uso sin emular la app, es decir, la uso con postman
             //const response = await fetch('http://127.0.0.1:5000/protected', {
 
             //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
-            //const response = await fetch('http://192.168.0.102:5000/protected', {
-            const response = await fetch('http://172.31.98.50:5000/protected', {
+            const response = await fetch('http://192.168.0.102:5000/getUser', {
+            //const response = await fetch('http://172.31.98.50:5000/protected', {
 
-            //esta url es para emular la app desde emulador de android studio, si jaló
-            //const response = await fetch('http://10.0.2.2:5000/protected', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -36,49 +32,92 @@ export function ChangePassw (){
                 },
             });
 
+            console.log(response);
+
             if (response.ok){
                 const mail = await response.text();
                 console.log(mail);
                 setCorreo(mail);
+                //setCorreo(await response.text());
+                //console.log(correo);
                 //setCorreo(await response.text);
+            }else{
+                console.error('error al obtener el correo:', response.status);
             }
 
-            try{
-                //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
-                //const response2 = await fetch('http://192.168.0.102:5000/updatePassword', {
-                const response2 = await fetch('http://172.31.98.50:5000/updatePassword', {
-
-                //esta url es para emular la app desde emulador de android studio, si jaló
-                //const response = await fetch('http://10.0.2.2:5000/updatePassword', {
-                //const response2 = await fetch('http://10.0.2.2:5000/updatePassword', {
-                    method: 'PUT',
-                    headers: {
-                    'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                      'correo': correo,
-                      'passw': newPassw,
-                    }),
-                }).catch(error=>{
-                    console.log("Hola por esto doy error:",error);
-                }
-                );
-
-                if (response2.ok){
-                    console.log(response2);
-                    Alert.alert('Éxito', '¡Contraseña cambiada correctamente!');
-                    navigation.navigate('User');
-                }
-                console.log(response2)
-            }catch{
-                Alert.alert('Error', 'Error al obtener el correo desde el token');
-            }
+            //--------------------
 
 
-        }catch{
+
+
+
+
+        }catch(error){
+            console.error('error en la solicitud: ', error);
             Alert.alert('Error', 'Error al obtener el correo desde el token');
         }
     };
+
+    useEffect(()=>{
+        obtenerCorreo();
+    }, []);
+
+    useEffect(()=> {
+        if(correo){
+            console.log('Correo actualizado: ', correo);
+        }
+    }, [correo]);
+
+    const handleChange = async () => {
+
+        if (!newPassw) {
+            Alert.alert('Error', 'Por favor ingresa una nueva contraseña');
+            return;
+        }
+
+        setLoading(true);
+
+
+        console.log('Datos enviados:', correo, newPassw);
+
+
+        try{
+            //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
+            const response2 = await fetch('http://192.168.0.102:5000/updatePassword', {
+            //const response2 = await fetch('http://172.31.98.50:5000/updatePassword', {
+
+            //esta url es para emular la app desde emulador de android studio, si jaló
+            //const response = await fetch('http://10.0.2.2:5000/updatePassword', {
+            //const response2 = await fetch('http://10.0.2.2:5000/updatePassword', {
+                method: 'PUT',
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'correo': correo,
+                    'passw': newPassw,
+                }),
+            }).catch(error=>{
+                console.log('Hola por esto doy error:',error);
+            }
+            );
+
+            const data = await response2.json();
+            console.log('Respuesta del servidor:', data);
+
+
+            if (response2.status === 200){
+                console.log(response2);
+                Alert.alert('Éxito', '¡Contraseña cambiada correctamente!');
+                navigation.navigate('User');
+            }
+            console.log(response2);
+        }catch{
+            console.log('Error al cambiar la contraseña');
+        }
+    };
+
+
 
     const handleVolver = async () => {
         navigation.navigate('User');

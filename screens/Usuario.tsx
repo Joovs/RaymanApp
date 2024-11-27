@@ -25,7 +25,7 @@ export function Usuario (){
 
             //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
             const response = await fetch('http://192.168.0.102:5000/protected', {
-            //const response = await fetch('http://172.31.99.221:5000/protected', {
+            //const response = await fetch('http://172.31.98.50:5000/protected', {
 
 
             //esta url es para emular la app desde emulador de android studio, si jaló

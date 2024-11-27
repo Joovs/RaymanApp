@@ -179,7 +179,7 @@ def actualizarContrasena():
     try:
         collection_users.update_one({"email": correo}, {"$set": {"contrasena": generate_password_hash(new_passw)}})
         print(collection_users.find_one({"email": correo}, {"contrasena": 1, '_id': 0}))
-        return jsonify({"mensaje": "Cambios guardados!"})
+        return jsonify({"mensaje": "Cambios guardados!"}), 200
     except Exception as e:
         print("Error al obtener registrar el usuario:", str(e))
         return jsonify({"error": "Ocurrió un error al hacer el registro"}), 500 
@@ -194,6 +194,14 @@ def protected():
     current_user = get_jwt_identity()
     #return jsonify({"message": f"Hola {current_user}, estás viendo una ruta protegida"}), 200
     return str(current_user)
+
+@app.route('/getUser', methods=['GET'])
+@jwt_required()
+def username():
+    print("este es la info de mi token",get_jwt_identity())
+    actualUsuario = get_jwt_identity()
+    return actualUsuario
+    
 
 
 # Ruta para validar el token

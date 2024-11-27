@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Text, StyleSheet, View, TouchableOpacity, TextInput  } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation  } from '@react-navigation/native';
 import { Alert } from 'react-native';
@@ -26,7 +25,12 @@ export function Signup (){
 
         try{
 
-            const response = await fetch('http://10.0.2.2:5000/userRegistration', {
+            //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
+            //const response = await fetch('http://192.168.0.102:5000/userValidation', {
+            const response = await fetch('http://172.31.98.50:5000/userValidation', {
+
+            //esta url es para emular la app desde emulador de android studio, si jaló
+            //const response = await fetch('http://10.0.2.2:5000/userValidation', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -64,7 +68,7 @@ export function Signup (){
     return(
         // eslint-disable-next-line react-native/no-inline-styles
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <ScrollView style={styles.background}>
+            <View style={styles.background}>
                 <LinearGradient
                     start={{x: 0, y: 0}}
                     end={{x: 1, y: 0}}
@@ -98,7 +102,7 @@ export function Signup (){
                         </TouchableOpacity>
                     </View>
                 </LinearGradient>
-            </ScrollView>
+            </View>
         </GestureHandlerRootView>
     );
 }
@@ -112,6 +116,8 @@ const styles = StyleSheet.create({
     },
     background:{
         backgroundColor: 'linear-gradient(to right, blue, pink)',
+        height: '100%',
+        width: '100%',
     },
     title: {
         fontSize: 40,
