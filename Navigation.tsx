@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { Home } from './screens/HomeScreen';
 import { Catalog } from './screens/CatalogScreen';
 import { Bookmarks } from './screens/BookmarksScreen';
+import { Closing } from './screens/Closing';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Login } from './screens/Login';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -55,23 +56,38 @@ function UserStack(){
         >
             <UsuarioStak.Screen
                 name="User"
-                component={Usuario}
                 options={{
                     headerShown: false,
                 }}
-            />
+            >
+                {() => (
+                    <ProtectedRoute>
+                        <Usuario />
+                    </ProtectedRoute>
+                )}
+            </UsuarioStak.Screen>
             <UsuarioStak.Screen
                 name="Cambiar"
-                component={ChangePassw}
                 options={{
                     headerShown: false,
                 }}
-            />
+            >
+                {() => (
+                    <ProtectedRoute>
+                        <ChangePassw />
+                    </ProtectedRoute>
+                )}
+            </UsuarioStak.Screen>
             {/* Hay un detalle en esta parte, necesito pensar bien la navegación */}
             <UsuarioStak.Screen
-                name="Login"
-                component={MyStack}
-            />
+                name="Closing"
+            >
+                {() => (
+                    <ProtectedRoute>
+                        <Closing />
+                    </ProtectedRoute>
+                )}
+            </UsuarioStak.Screen>
     </UsuarioStak.Navigator>
     );
 

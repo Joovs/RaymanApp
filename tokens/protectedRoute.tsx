@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { validateToken } from './validateToken';
+import { removeToken } from './tokenStorage';
 
 interface ProtectedRouteProps {
     children: React.ReactNode;
@@ -19,6 +20,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
                 if (isValid) {
                     setIsAuthenticated(true);
                 } else {
+                    await removeToken();
                     navigation.navigate('Iniciar'); // Redirigir si no está autenticado
                 }
             } catch (error) {
