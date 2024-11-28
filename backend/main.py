@@ -1,3 +1,4 @@
+from bson import ObjectId
 from flask import Flask, json, jsonify, request
 from flask_cors import CORS
 from jwt import ExpiredSignatureError, InvalidTokenError
@@ -33,6 +34,8 @@ client = MongoClient(uri, server_api=pymongo.server_api.ServerApi(version="1", s
                      
 db = client.rayman_store
 collection_users = db.usuarios
+productos_collection = db.productos
+collection_scores = db.marcadores
 
 
 
@@ -233,6 +236,60 @@ def validate_token():
         return jsonify({"error": str(e)}), 401
     
 
+    
+
+
+
+
+
+# ----------------------------------------API obtener PRODUCTOS
+@app.route('/api/products', methods=['GET'])
+def get_products():
+    try:
+        products = list(productos_collection.find({}))
+        for product in products:
+            product['_id'] = str(product['_id'])  # Convierte ObjectId a string
+        return jsonify(products), 200
+    except Exception as e:
+        return jsonify({"error": "Error al obtener productos", "detalle": str(e)}), 500
+    
+
+@app.route('/addScore', methods=['POST'])
+def add_score():
+    data = request.get_json()
+    required_fields = ["Nombre", "Tiempo", "Descripcion", "Estrellas", "Imagen"]
+    for field in required_fields:
+        if field not in data:
+            return jsonify({"error": f"El campo {field} es obligatorio"}), 400
+
+    try:
+        result = collection.insert_one(data)
+        return jsonify({"_id": str(result.inserted_id), "message": "Marcador agregado con éxito"}), 201
+    except Exception as e:
+        return jsonify({"error": "Error al agregar marcador", "detalle": str(e)}), 500
+
+
+
+@app.route('/getTopScores', methods=['GET'])
+def get_top_scores():
+    try:
+        top_scores = list(collection_scores.find().limit(4))
+        for score in top_scores:
+            score['_id'] = str(score['_id'])  # Convierte ObjectId a string
+        return jsonify(top_scores), 200
+    except Exception as e:
+        return jsonify({"error": "Error al obtener marcadores", "detalle": str(e)}), 500
+
+@app.route('/deleteScore/<id>', methods=['DELETE'])
+def delete_score(id):
+    try:
+        result = collection_scores.delete_one({"_id": ObjectId(id)})
+        if result.deleted_count > 0:
+            return jsonify({"message": "Marcador eliminado con éxito"}), 200
+        else:
+            return jsonify({"error": "Marcador no encontrado"}), 404
+    except Exception as e:
+        return jsonify({"error": "Error al eliminar marcador", "detalle": str(e)}), 500
 
 
 
