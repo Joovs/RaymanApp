@@ -54,7 +54,7 @@ export function Usuario (){
 
         try{
             await removeToken(); // Borra el token
-            
+            navigation.replace('Closing');
         }catch(error){
             console.log(error);
         }finally{
