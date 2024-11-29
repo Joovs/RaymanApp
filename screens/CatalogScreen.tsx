@@ -29,7 +29,7 @@ export function Catalog (){
                 });
 
                 const resullt: Item[] = await response.json();
-                console.log(resullt);
+                //console.log(resullt);
                 if (Array.isArray(resullt)) {
                     setProductos(resullt);
                 } else {
@@ -44,7 +44,6 @@ export function Catalog (){
         fetchProductos();
     }, []);
 
-    console.log('Productos cargados:', productos);
 
 
 
@@ -67,7 +66,7 @@ export function Catalog (){
         />
           {/* <Image source={{ uri: `data:image/png;base64,${item.Imagen}` }} /> */}
           <Text style={styles.text}>{item.Descripcion}</Text>
-          <Text style={styles.text}>{item.Precio}</Text>
+          <Text style={styles.textPrecio}>Precio: {item.Precio}</Text>
         </View>
     );
 
@@ -89,7 +88,7 @@ export function Catalog (){
                         Rayman: Los Caminos de la Vida
                     </Text>
                     <View style={styles.encab}>
-                        <Text style={styles.encabTxt}>Peluches</Text>
+                        <Text style={styles.encabTxt}>Nuestros Productos</Text>
                     </View>
 
                     <FlatList
@@ -103,7 +102,8 @@ export function Catalog (){
 
 
                     <View style={styles.encab}>
-                        <Text style={styles.encabTxt}>Figuras Coleccionables</Text>
+                        {/* eslint-disable-next-line react/self-closing-comp */}
+                        <Text style={styles.encabTxt}></Text>
                     </View>
 
                 </LinearGradient>
@@ -114,8 +114,8 @@ export function Catalog (){
 
 const styles = StyleSheet.create({
     image: {
-        width: 100,
-        height: 100,
+        width: 200,
+        height: 200,
         marginBottom: 8,
     },
     loading: {
@@ -143,12 +143,18 @@ const styles = StyleSheet.create({
     text: {
         color: '#000',
     },
+    textPrecio: {
+        color: '#000',
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
     div: {
         backgroundColor: '#ffcd45',
         padding: 10,
         borderRadius: 15,
         alignContent: 'center',
         margin: 10,
+        alignItems: 'center',
     },
     imga:{
         width: 325,
