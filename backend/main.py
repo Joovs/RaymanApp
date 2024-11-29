@@ -1,3 +1,4 @@
+import os
 from bson import ObjectId
 from flask import Flask, json, jsonify, request
 from flask_cors import CORS
@@ -10,6 +11,8 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, decode_token, jwt_required, get_jwt_identity
 from datetime import datetime, timedelta, timezone
 from pprint import pprint
+from paypalcheckoutsdk.orders import OrdersCreateRequest
+from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -263,7 +266,7 @@ def add_score():
             return jsonify({"error": f"El campo {field} es obligatorio"}), 400
 
     try:
-        result = collection.insert_one(data)
+        result = collection_scores.insert_one(data)
         return jsonify({"_id": str(result.inserted_id), "message": "Marcador agregado con éxito"}), 201
     except Exception as e:
         return jsonify({"error": "Error al agregar marcador", "detalle": str(e)}), 500
@@ -290,6 +293,41 @@ def delete_score(id):
             return jsonify({"error": "Marcador no encontrado"}), 404
     except Exception as e:
         return jsonify({"error": "Error al eliminar marcador", "detalle": str(e)}), 500
+
+
+
+
+
+# --- Endpoint de PayPal --- 
+@app.route('/api/paypal/checkout', methods=['POST'])
+def paypal_checkout():
+    
+
+    client_id = os.getenv("PAYPAL_CLIENT_ID")
+    client_secret = os.getenv("PAYPAL_SECRET")
+    environment = SandboxEnvironment(client_id=client_id, client_secret=client_secret)
+    client = PayPalHttpClient(environment)
+
+    data = request.get_json()
+    items = data.get("items", [])
+
+    try:
+        total_value = sum(float(item["price"]) * item["quantity"] for item in items)
+        request_order = OrdersCreateRequest()
+        request_order.prefer('return=representation')
+        request_order.request_body({
+            "intent": "CAPTURE",
+            "purchase_units": [{"amount": {"currency_code": "USD", "value": str(total_value)}}],
+            "application_context": {"return_url": "http://localhost:5000/success", "cancel_url": "http://localhost:5000/cancel"}
+        })
+
+        response = client.execute(request_order)
+        return jsonify({"approval_url": response.result.links[1].href}), 200
+
+    except Exception as e:
+        print(f"Error en la creación del pago PayPal: {str(e)}")
+        return jsonify({"error": "Error al procesar pago"}), 500
+
 
 
 
