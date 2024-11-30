@@ -9,7 +9,7 @@ interface Item {
     Imagen: string;
     Nombre: string,
     Precio: String,
-  }
+}
 
 export function Catalog (){
 

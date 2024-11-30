@@ -11,8 +11,8 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, decode_token, jwt_required, get_jwt_identity
 from datetime import datetime, timedelta, timezone
 from pprint import pprint
-from paypalcheckoutsdk.orders import OrdersCreateRequest
-from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
+""" from paypalcheckoutsdk.orders import OrdersCreateRequest
+from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment """
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -237,9 +237,9 @@ def validate_token():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 401
-    
 
-    
+
+
 
 
 
@@ -255,8 +255,15 @@ def get_products():
         return jsonify(products), 200
     except Exception as e:
         return jsonify({"error": "Error al obtener productos", "detalle": str(e)}), 500
-    
 
+
+
+
+
+
+
+
+# ----------------------------------------API AGREGAR MARCADOR
 @app.route('/addScore', methods=['POST'])
 def add_score():
     data = request.get_json()
@@ -273,6 +280,14 @@ def add_score():
 
 
 
+
+
+
+
+
+
+
+# ----------------------------------------API obtener TOP DE MARCADORES
 @app.route('/getTopScores', methods=['GET'])
 def get_top_scores():
     try:
@@ -283,6 +298,51 @@ def get_top_scores():
     except Exception as e:
         return jsonify({"error": "Error al obtener marcadores", "detalle": str(e)}), 500
 
+
+
+
+
+
+
+# ----------------------------------------API obtener Mi marcador
+@app.route('/getMyScore', methods=['GET'])
+@jwt_required()
+def get_my_scores():
+    usuario = get_jwt_identity()
+    try:
+        """ miScore = collection_scores.find_one({"Nombre": usuario}, {"_id": 0})
+        
+        return jsonify(miScore), 200 """
+        mi_scores = list(collection_scores.find({"Nombre": usuario}))
+        for score in mi_scores:
+            score['_id'] = str(score['_id'])  # Convierte ObjectId a string
+        return jsonify(mi_scores), 200
+    except Exception as e:
+        return jsonify({"error": "Error al obtener tu marcador", "detalle": str(e)}), 500
+
+
+# ----------------------------------------API verificar existencia de marcador
+@app.route('/verificarMarcador', methods=['GET'])
+@jwt_required()
+def validation_score():
+    usuario = get_jwt_identity()
+    try:
+        existe = collection_scores.find_one({"Nombre": usuario}, {"_id": 0})
+        
+        if existe:
+            return jsonify({"msg": "El marcador con ese usuario Si extiste"}), 200
+        else:
+            return jsonify({"msg": "Marcador no existente"}), 404
+    except Exception as e:
+        return jsonify({"error": "Error al Verificar existensia de marcador", "detalle": str(e)}), 500
+
+
+
+
+
+
+
+# ----------------------------------------API ELIMINAR MARCADOR
 @app.route('/deleteScore/<id>', methods=['DELETE'])
 def delete_score(id):
     try:
@@ -299,6 +359,7 @@ def delete_score(id):
 
 
 # --- Endpoint de PayPal --- 
+""" 
 @app.route('/api/paypal/checkout', methods=['POST'])
 def paypal_checkout():
     
@@ -327,7 +388,7 @@ def paypal_checkout():
     except Exception as e:
         print(f"Error en la creación del pago PayPal: {str(e)}")
         return jsonify({"error": "Error al procesar pago"}), 500
-
+ """
 
 
 

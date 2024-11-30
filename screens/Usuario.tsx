@@ -5,8 +5,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { getToken, removeToken } from '../tokens/tokenStorage';
-import { getDecodedToken } from '../tokens/AuthUtils';
-import { ProtectedRoute } from '../tokens/protectedRoute';
 
 
 
@@ -80,9 +78,8 @@ export function Usuario (){
                     style={styles.container}
                 >
                     <View style={styles.div}>
-                        <Text style={styles.title}>Usuario</Text>
-                        <Image source={require('../src/icons/usuario.png')}/>
-                        <Text>Nombre:</Text>
+                        {/* <Text style={styles.title}>Usuario</Text> */}
+                        <Image style={styles.imga} source={require('../src/icons/usuario.png')}/>
 
                         {userData ? (
                             <>
@@ -123,10 +120,11 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     title: {
-        fontSize: 40,
+        fontSize: 30,
         color: '#000',
         fontFamily: 'Helvetica, sans-serif',
         fontWeight: 'bold',
+        alignSelf: 'center',
     },
     text: {
         color: '#000',
@@ -142,9 +140,9 @@ const styles = StyleSheet.create({
         marginTop: '50%',
     },
     imga:{
-        width: 325,
-        height: 250,
-        margin: 5,
+        alignSelf: 'center',
+        height: 300,
+        width: 300,
     },
     encab:{
         backgroundColor: '#1e4bb1',
