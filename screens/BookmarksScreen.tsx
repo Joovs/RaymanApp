@@ -4,6 +4,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { getToken } from '../tokens/tokenStorage';
+import { useNavigation  } from '@react-navigation/native';
+
 
 
 interface Item {
@@ -21,6 +23,8 @@ interface Item {
 
 
 export function Bookmarks (){
+
+    const navigation = useNavigation();
 
     const [topMarcador, setTopMarcador] = useState<Item[]>([]);
     const [loading, setLoading] = useState(true);
@@ -175,11 +179,11 @@ export function Bookmarks (){
 
                         {existe === true ?
                             <FlatList
-                            data={miMarca}
+                            data={miMarca || []}
                             keyExtractor={(item) => item._id}
                             renderItem={renderMiMarca}
                             />
-                        :   <TouchableOpacity style={styles.btnMarc}>
+                        :   <TouchableOpacity style={styles.btnMarc} onPress={() => navigation.navigate('newMark')}>
                                 <Text style={styles.btnTxt}>Agregar marcador</Text>
                             </TouchableOpacity>
                         }
@@ -200,18 +204,6 @@ export function Bookmarks (){
                     />
 
 
-                    {/* <View style={styles.div}>
-                        <Text style={styles.tjug}>Jugador1</Text>
-                        <Image source={ require('../src/img/dinosaurio.jpg')}/>
-                    </View>
-                    <View style={styles.div}>
-                        <Text style={styles.tjug}>Jugador1</Text>
-                        <Image source={ require('../src/img/dinosaurio.jpg')}/>
-                    </View>
-                    <View style={styles.div}>
-                        <Text style={styles.tjug}>Jugador1</Text>
-                        <Image source={ require('../src/img/dinosaurio.jpg')}/>
-                    </View> */}
                 </LinearGradient>
             </ScrollView>
         </GestureHandlerRootView>

@@ -45,11 +45,10 @@ export function Signup (){
 
             const jsonResponse = await response.json();
 
-            //en este if, existen detallitos porque me dijo que error, pero si se regitró :):
             if (response.ok) {
                 Alert.alert('Éxito', 'Nuevo usuario registrado :)');
             // Aquí puedes redirigir al usuario a otra pantalla, guardar tokens, etc.
-            navigation.navigate('login');
+            navigation.navigate('Iniciar');
             }
             else{
                 Alert.alert('Error',  jsonResponse.error );
@@ -79,7 +78,7 @@ export function Signup (){
                         <Text style={styles.title}>Registrate!</Text>
                         <TextInput style={styles.input} value={name} onChangeText={setName} placeholder="Ingresa tu nombre" placeholderTextColor={'#666'}/>
                         <TextInput style={styles.input} value={mail} onChangeText={setMail} placeholder="Ingresa tu correo electrónico" placeholderTextColor={'#666'}/>
-                        <TextInput style={styles.input} value={age} onChangeText={setAge} placeholder="Ingresa tu edad" placeholderTextColor={'#666'} />
+                        <TextInput style={styles.input} value={age} onChangeText={setAge} keyboardType="numeric" placeholder="Ingresa tu edad" placeholderTextColor={'#666'} />
                         <TextInput style={styles.input} value={passw} onChangeText={setPassw} secureTextEntry placeholder="Ingresa tu contraseña" placeholderTextColor={'#666'} />
                         <TouchableOpacity style={styles.btnMarc} onPress={handleRegister} disabled={loading}>
                             <Text style={styles.btnTxt}>Registrar Usuario</Text>
