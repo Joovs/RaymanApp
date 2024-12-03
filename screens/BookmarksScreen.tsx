@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Text, StyleSheet, View, Image, TouchableOpacity, ActivityIndicator, FlatList  } from 'react-native';
+import { Text, StyleSheet, View, Image, TouchableOpacity, ActivityIndicator, FlatList, Alert  } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ScrollView } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import { getToken } from '../tokens/tokenStorage';
+import { getToken, removeToken } from '../tokens/tokenStorage';
 import { useNavigation  } from '@react-navigation/native';
 
 
@@ -30,6 +30,7 @@ export function Bookmarks (){
     const [loading, setLoading] = useState(true);
     const [miMarca, setMiMarca] = useState<Item[]>([]);
     const [existe, setExiste] = useState<boolean>(false);
+    const [load, setLoad] = useState<boolean>(false);
 
     useEffect(()=> {
         const fetchTop = async () => {
@@ -121,6 +122,33 @@ export function Bookmarks (){
         );
     }
 
+    const handleDelete = async () => {
+
+        const token = await getToken();
+
+        try{
+            const elim = await fetch('http://192.168.0.102:5000/deleteScore', {
+            //const response2 = await fetch('http://172.31.98.50:5000/deleteScore', {
+                method: 'DELETE',
+                headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                },
+            });
+
+            if(elim.ok){
+                Alert.alert('Mensje', 'Marcador eliminado. Por favor, inicia sesión para visualizar los cambios');
+                await removeToken(); // Borra el token
+                navigation.replace('Closing');
+            }
+        }catch(error){
+            console.log(error);
+        }finally{
+            setLoading(false);
+        }
+
+    };
+
     const renderMiMarca = ({ item}: { item: Item}) => (
         <View style={styles.div}>
             <Text style={styles.title}>Mi marcador</Text>
@@ -132,7 +160,7 @@ export function Bookmarks (){
             <Text style={styles.puntuacion}>{'★'.repeat(item.Estrellas)}{'☆'.repeat(5 - item.Estrellas)}</Text>
             <Text style={styles.text}>{item.Descripcion}</Text>
             <TouchableOpacity style={styles.btnElim}>
-                <Text style={styles.btnTxt}>Eliminar mi marcador</Text>
+                <Text style={styles.btnTxt} onPress={handleDelete} disabled={load}>Eliminar mi marcador</Text>
             </TouchableOpacity>
         </View>
     );
