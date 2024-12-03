@@ -293,6 +293,7 @@ def getUsername():
     
     try:
         resultado = collection_users.find_one({"email": email}, {"nombre": 1, '_id': 0})
+        print(resultado)
         return jsonify(resultado)
     except Exception as e:
         return jsonify({"Error": "No se pudo obtener el nombre del usuario: ", "detalle": str(e)})
