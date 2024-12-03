@@ -26,11 +26,11 @@ export function Signup (){
         try{
 
             //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
-            //const response = await fetch('http://192.168.0.102:5000/userValidation', {
-            const response = await fetch('http://172.31.98.50:5000/userValidation', {
+            const response = await fetch('http://192.168.0.102:5000/userRegistration', {
+            //const response = await fetch('http://172.31.98.50:5000/userRegistration', {
 
             //esta url es para emular la app desde emulador de android studio, si jaló
-            //const response = await fetch('http://10.0.2.2:5000/userValidation', {
+            //const response = await fetch('http://10.0.2.2:5000/userRegistration', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
