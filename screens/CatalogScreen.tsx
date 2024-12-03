@@ -87,6 +87,9 @@ export function Catalog (){
                     <Text style={styles.title}>
                         Rayman: Los Caminos de la Vida
                     </Text>
+                    <View style={styles.div}>
+                        <Text style={styles.text}>Si quieres obtener alguno de nuestros productos ¡Visítanos en nuestra aplicación móvil!</Text>
+                    </View>
                     <View style={styles.encab}>
                         <Text style={styles.encabTxt}>Nuestros Productos</Text>
                     </View>
