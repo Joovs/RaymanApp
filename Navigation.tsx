@@ -11,6 +11,7 @@ import { Login } from './screens/Login';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Signup } from './screens/Signup';
 import { Usuario } from './screens/Usuario';
+import { NewMark } from './screens/NewMark';
 import { ProtectedRoute } from './tokens/protectedRoute';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ChangePassw } from './screens/ChangePassw';
@@ -18,6 +19,7 @@ import { ChangePassw } from './screens/ChangePassw';
 
 const LoginStack = createNativeStackNavigator();
 const UsuarioStak = createNativeStackNavigator();
+const MarkStack = createNativeStackNavigator();
 
 function MyStack(){
     return(
@@ -93,6 +95,41 @@ function UserStack(){
 
 }
 
+function MarcadorStack(){
+    return(
+        <MarkStack.Navigator
+            initialRouteName="marcador"
+        >
+            <MarkStack.Screen
+                name="marcador"
+                options={{
+                    headerShown: false,
+                }}
+            >
+                {() => (
+                    <ProtectedRoute>
+                        <Bookmarks />
+                    </ProtectedRoute>
+                )}
+            </MarkStack.Screen>
+
+
+            <MarkStack.Screen
+                name="newMark"
+                options={{
+                    headerShown: false,
+                }}
+            >
+                {()=> (
+                    <ProtectedRoute>
+                        <NewMark />
+                    </ProtectedRoute>
+                )}
+            </MarkStack.Screen>
+        </MarkStack.Navigator>
+    );
+}
+
 
 
 
@@ -140,19 +177,14 @@ function MyTabs(){
             </Tab.Screen>
             <Tab.Screen
                 name="Marcadores"
+                component={MarcadorStack}
                 options={{
                     tabBarLabel: 'Marcadores',
                     // eslint-disable-next-line react/no-unstable-nested-components
                     tabBarIcon: () => (<Icon name="paperclip" size={30} color="#1e4bb1" />),
                     headerShown: false,
                 }}
-            >
-                {() => (
-                    <ProtectedRoute>
-                        <Bookmarks />
-                    </ProtectedRoute>
-                )}
-            </Tab.Screen>
+            />
             <Tab.Screen
                 name="Usuario"
                 component={UserStack}
