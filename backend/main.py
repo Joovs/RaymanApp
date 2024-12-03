@@ -277,6 +277,26 @@ def add_score():
         return jsonify({"_id": str(result.inserted_id), "message": "Marcador agregado con éxito"}), 201
     except Exception as e:
         return jsonify({"error": "Error al agregar marcador", "detalle": str(e)}), 500
+    
+
+
+
+# ----------------------API PARA OBTENER NOMBRE DE USUARIO
+@app.route('/getUsername', methods=['POST'])
+def getUsername():
+    data = request.get_json()
+
+    if not data or 'mail' not in data:
+        return jsonify({"Error": "El campo 'mail' es obligatorio."}), 400
+
+    email = data.get('mail')
+    
+    try:
+        resultado = collection_users.find_one({"email": email}, {"nombre": 1, '_id': 0})
+        return jsonify(resultado)
+    except Exception as e:
+        return jsonify({"Error": "No se pudo obtener el nombre del usuario: ", "detalle": str(e)})
+    
 
 
 
