@@ -365,16 +365,17 @@ def validation_score():
 
 # ----------------------------------------API ELIMINAR MARCADOR
 @app.route('/deleteScore', methods=['DELETE'])
+@jwt_required()
 def delete_score():
-    data = request.get_json()
-    email = data.get('mail')
+    usuario = get_jwt_identity()
     try:
-        result = collection_scores.delete_one({"Nombre": email})
+        result = collection_scores.delete_one({"Nombre": usuario})
         if result.deleted_count > 0:
             return jsonify({"message": "Marcador eliminado con éxito"}), 200
         else:
             return jsonify({"error": "Marcador no encontrado"}), 404
     except Exception as e:
+        print({"error": "Error al eliminar marcador", "detalle": str(e)})
         return jsonify({"error": "Error al eliminar marcador", "detalle": str(e)}), 500
 
 
