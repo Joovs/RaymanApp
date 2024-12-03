@@ -364,10 +364,12 @@ def validation_score():
 
 
 # ----------------------------------------API ELIMINAR MARCADOR
-@app.route('/deleteScore/<id>', methods=['DELETE'])
-def delete_score(id):
+@app.route('/deleteScore', methods=['DELETE'])
+def delete_score():
+    data = request.get_json()
+    email = data.get('mail')
     try:
-        result = collection_scores.delete_one({"_id": ObjectId(id)})
+        result = collection_scores.delete_one({"Nombre": email})
         if result.deleted_count > 0:
             return jsonify({"message": "Marcador eliminado con éxito"}), 200
         else:
