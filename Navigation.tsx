@@ -57,17 +57,12 @@ function UserStack(){
             initialRouteName="User"
         >
             <UsuarioStak.Screen
+            component={Usuario}
                 name="User"
                 options={{
                     headerShown: false,
                 }}
-            >
-                {() => (
-                    <ProtectedRoute>
-                        <Usuario />
-                    </ProtectedRoute>
-                )}
-            </UsuarioStak.Screen>
+            />
             <UsuarioStak.Screen
                 name="Cambiar"
                 options={{

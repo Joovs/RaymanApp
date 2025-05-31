@@ -22,8 +22,8 @@ export function ChangePassw (){
             //const response = await fetch('http://127.0.0.1:5000/protected', {
 
             //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
-            const response = await fetch('http://192.168.0.102:5000/getUser', {
-            //const response = await fetch('http://172.31.98.50:5000/protected', {
+            //const response = await fetch('http://192.168.0.102:5000/getUser', {
+            const response = await fetch('http://192.168.0.102:5000/protected', {
 
                 method: 'GET',
                 headers: {
@@ -83,8 +83,8 @@ export function ChangePassw (){
 
         try{
             //esta url es para la emulación desde dispositivo fisico, pero no me jaló bien
+            //const response2 = await fetch('http://192.168.0.102:5000/updatePassword', {
             const response2 = await fetch('http://192.168.0.102:5000/updatePassword', {
-            //const response2 = await fetch('http://172.31.98.50:5000/updatePassword', {
 
             //esta url es para emular la app desde emulador de android studio, si jaló
             //const response = await fetch('http://10.0.2.2:5000/updatePassword', {
